@@ -1,12 +1,12 @@
 import { TaskStorage } from "./storage/index.js";
 import { ToDoView } from "./view/index.js";
-//Get TaskStorage instance, then pull getTasks method (not sure this right choice)
-const storage = new TaskStorage ();
-const getTasks = storage.getTasks();
+
 
 // Create class that binds storage and view
 export class TaskController {
     constructor (containerId) {
+        this.storage = new TaskStorage ();
+        const getTasks = this.storage.getTasks(); 
         this.view = new ToDoView ({
             containerId,
             getTasks,
@@ -19,16 +19,16 @@ export class TaskController {
     //Add new task 
     createNewTask = (newTask) => {
         this.view.createTask(newTask)
-        storage.addTask(newTask)
+        this.storage.addTask(newTask)
     }
     // Remove task
     removeTasks = (taskId) => {
-        storage.removeTaskStorage(taskId)
+        this.storage.removeTaskStorage(taskId)
         this.view.removeTask(taskId);
     }
     // Toggle task status
     toggleTaskStatus = (taskId, done) => {
-        storage.toggleCompleteStatus(taskId, done)
+        this.storage.toggleCompleteStatus(taskId, done)
         this.view.toggleStatus(taskId)
     }
 }
